@@ -1,8 +1,8 @@
 DEF_TEST_DATA = -DTEST_DATA=\"../TestData/\"
 DEF_WORK_DATA = -DWORK_DATA=\"../../WorkData/\"
-DEBUG_CC_FLAGS = -I/usr/include/opencv4 -I.. -c -g $(DEF_TEST_DATA) $(DEF_WORK_DATA)
-RELEASE_CC_FLAGS = -I/usr/include/opencv4 -I.. -c -O3 $(DEF_TEST_DATA) $(DEF_WORK_DATA)
-LIBS = -lopencv_imgcodecs -lopencv_imgproc -lopencv_core -lstdc++ -lpthread
+DEBUG_CC_FLAGS = -I/usr/local/include/opencv4 -I.. -c -g $(DEF_TEST_DATA) $(DEF_WORK_DATA)
+RELEASE_CC_FLAGS = -I/usr/local/include/opencv4 -I.. -c -O3 $(DEF_TEST_DATA) $(DEF_WORK_DATA)
+LIBS = -L/usr/local/lib -lopencv_imgcodecs -lopencv_imgproc -lopencv_core -lstdc++ -lpthread
 DEBUG_TARGET_DIR = ../debug
 RELEASE_TARGET_DIR = ../release
 DEBUG_OBJECT_DIR = o/debug

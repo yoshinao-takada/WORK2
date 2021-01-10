@@ -1,7 +1,4 @@
 #include    "study/UTmargincopy2D.h"
-#include    <opencv2/core.hpp>
-#include    <opencv2/imgproc.hpp>
-#include    <opencv2/imgcodecs.hpp>
 #include    "base/BLfile.h"
 #define RANDOM_GRAYSCALE_JPG    WORK_DIR "grayscale_random.jpg"
 #define VERTICAL_CYCLIC_CSV     WORK_DIR "vertical_cyclic.csv"

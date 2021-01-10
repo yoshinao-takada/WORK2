@@ -95,7 +95,7 @@ static int BLcommon_save_image_csv_map2D(const char* filepath, pBLarray_t array,
                         fprintf(pf, ",%d", i_array_u32[ix]);
                         break;
                     case BLimage_save_type_csv_map2D_1r32:
-                        fprintf(pf, ",%d", i_array_r32[ix]);
+                        fprintf(pf, ",%f", i_array_r32[ix]);
                         break;
                 }
             }
@@ -156,7 +156,7 @@ static int BLcommon_save_image_csv_column(const char* filepath, pBLarray_t array
                         fprintf(pf, "%d", i_array_u32[ix]);
                         break;
                     case BLimage_save_type_csv_column_1r32:
-                        fprintf(pf, "%d", i_array_r32[ix]);
+                        fprintf(pf, "%f", i_array_r32[ix]);
                         break;
                 }
                 fprintf(pf, "\n");
