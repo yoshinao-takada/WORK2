@@ -12,13 +12,15 @@ DEBUG_TARGET = $(DEBUG_TARGET_DIR)/study.exe
 RELEASE_TARGET = $(RELEASE_TARGET_DIR)/study.exe
 DEBUG_OBJECTS = $(DEBUG_OBJECT_DIR)/study_main.o \
 	$(DEBUG_OBJECT_DIR)/BLrandimg.o $(DEBUG_OBJECT_DIR)/BLmargincopy2D.o \
-	$(DEBUG_OBJECT_DIR)/BLfilter2D.o \
+	$(DEBUG_OBJECT_DIR)/BLfilter2D.o $(DEBUG_OBJECT_DIR)/BLconvert.o \
+	$(DEBUG_OBJECT_DIR)/BLfconvert.o \
 	$(DEBUG_OBJECT_DIR)/UTmargincopy2D.o $(DEBUG_OBJECT_DIR)/BLsat.o \
 	$(DEBUG_OBJECT_DIR)/UTsat.o $(DEBUG_OBJECT_DIR)/UTcommon.o \
 	$(DEBUG_OBJECT_DIR)/UTfilter2D.o
 RELEASE_OBJECTS = $(RELEASE_OBJECT_DIR)/study_main.o \
 	$(RELEASE_OBJECT_DIR)/BLrandimg.o $(RELEASE_OBJECT_DIR)/BLmargincopy2D.o \
-	$(RELEASE_OBJECT_DIR)/BLfilter2D.o \
+	$(RELEASE_OBJECT_DIR)/BLfilter2D.o $(RELEASE_OBJECT_DIR)/BLconvert.o \
+	$(RELEASE_OBJECT_DIR)BLfconvert.o \
 	$(RELEASE_OBJECT_DIR)/UTmargincopy2D.o $(RELEASE_OBJECT_DIR)/BLsat.o \
 	$(RELEASE_OBJECT_DIR)/UTsat.o $(RELEASE_OBJECT_DIR)/UTcommon.o \
 	$(RELEASE_OBJECT_DIR)/UTfilter2D.o
@@ -49,6 +51,14 @@ $(DEBUG_OBJECT_DIR)/BLsat.o	:	BLsat.c BLsat.h
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
 $(DEBUG_OBJECT_DIR)/BLfilter2D.o	:	BLfilter2D.c BLfilter2D.h
+	mkdir -p $(DEBUG_OBJECT_DIR)
+	$(CC) $(DEBUG_CC_FLAGS) -mavx -o $@ $<
+
+$(DEBUG_OBJECT_DIR)/BLconvert.o	:	BLconvert.c BLconvert.h
+	mkdir -p $(DEBUG_OBJECT_DIR)
+	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
+
+$(DEBUG_OBJECT_DIR)/BLfconvert.o	:	BLfconvert.c BLfconvert.h
 	mkdir -p $(DEBUG_OBJECT_DIR)
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
@@ -100,6 +110,14 @@ $(RELEASE_OBJECT_DIR)/BLsat.o	:	BLsat.c BLsat.h
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 
 $(RELEASE_OBJECT_DIR)/BLfilter2D.o	:	BLfilter2D.c BLfilter2D.h
+	mkdir -p $(RELEASE_OBJECT_DIR)
+	$(CC) $(RELEASE_CC_FLAGS) -mavx -o $@ $<
+
+$(RELEASE_OBJECT_DIR)/BLconvert.o	:	BLconvert.c BLconvert.h
+	mkdir -p $(RELEASE_OBJECT_DIR)
+	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
+
+$(RELEASE_OBJECT_DIR)/BLfconvert.o	:	BLfconvert.c BLfconvert.h
 	mkdir -p $(RELEASE_OBJECT_DIR)
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 
