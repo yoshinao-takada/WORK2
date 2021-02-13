@@ -7,9 +7,9 @@ RELEASE_OBJECT_DIR = o/release
 DEBUG_TARGET = $(DEBUG_TARGET_DIR)/baseUT.exe
 RELEASE_TARGET = $(RELEASE_TARGET_DIR)/baseUT.exe
 DEBUG_OBJECTS = $(DEBUG_OBJECT_DIR)/ut_main.o $(DEBUG_OBJECT_DIR)/ts.o $(DEBUG_OBJECT_DIR)/thread.o \
-	$(DEBUG_OBJECT_DIR)/UTarray.o
+	$(DEBUG_OBJECT_DIR)/UTarray.o $(DEBUG_OBJECT_DIR)/ringbuf.o
 RELEASE_OBJECTS = $(RELEASE_OBJECT_DIR)/ut_main.o $(RELEASE_OBJECT_DIR)/ts.o $(RELEASE_OBJECT_DIR)/thread.o \
-	$(RELEASE_OBJECT_DIR)/UTarray.o
+	$(RELEASE_OBJECT_DIR)/UTarray.o $(RELEASE_OBJECT_DIR)/ringbuf.o
 
 #-------------------- debug -------------------------------
 .PHONY	:	debug
@@ -36,6 +36,10 @@ $(DEBUG_OBJECT_DIR)/thread.o	:	thread.c thread.h
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
 $(DEBUG_OBJECT_DIR)/UTarray.o	:	UTarray.c UTarray.h
+	mkdir -p $(DEBUG_OBJECT_DIR)
+	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
+
+$(DEBUG_OBJECT_DIR)/ringbuf.o	:	ringbuf.c ringbuf.h
 	mkdir -p $(DEBUG_OBJECT_DIR)
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
@@ -71,6 +75,10 @@ $(RELEASE_OBJECT_DIR)/thread.o	:	thread.c thread.h
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 
 $(RELEASE_OBJECT_DIR)/UTarray.o	:	UTarray.c UTarray.h
+	mkdir -p $(RELEASE_OBJECT_DIR)
+	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
+
+$(RELEASE_OBJECT_DIR)/ringbuf.o	:	ringbuf.c ringbuf.h
 	mkdir -p $(RELEASE_OBJECT_DIR)
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 

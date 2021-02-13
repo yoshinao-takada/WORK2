@@ -1,7 +1,22 @@
 #ifndef BLTHREAD_H_
 #define BLTHREAD_H_
-#include    "base/BLbase.h"
+/*!
+\brief It encapsulates synchronized repetition of a simple run-to-completion function.
+The function is implemented as a callback function with the signature identical to that of pthread.
+The threading framework works as follows.
+1) The framework creates a repetitive worker thread.
+2) The worker thread waits for BLthread_t.sync_gate_enter released.
+3) The master thread calls BLthread_enter_core_proc() to release BLthread_t.sync_gate_enter.
+4) The master thread waits for BLthread_t.sync_gate_exit released.
+5) The worker thread calls the callback.
+6) The worker thread releases BLthread_t.sync_gate_exit immediately after the callback function returns.
+7) The master thread is restored to execute doing something. Processing goes to 3).
+*/
 #include    <pthread.h>
+#ifndef BLBASE_H_
+// this type is identical to the thread start routine of pthread
+typedef void* (*BLcallback_t)(void* param);
+#endif
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -1,4 +1,5 @@
 #include    "base/BLthread.h"
+#include    "base/BLbase.h"
 #include    <stdlib.h>
 #include    <errno.h>
 

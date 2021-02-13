@@ -1,6 +1,7 @@
 #include    "base/BLthread.h"
 #include    "baseUT/thread.h"
 #include    "base/BLts.h"
+#include    "base/BLbase.h"
 
 static void* core_proc(void* param)
 {
@@ -18,7 +19,7 @@ int thread_sync()
     pBLthread_t thread = (pBLthread_t)NULL;
     CoreProcParam_t param =
     {
-        { 2, 400000000 }, // sleep request time = 2.4 sec
+        { 0, 400000000 }, // sleep request time = 0.4 sec
         { 0, 0 }
         // count is initialized at the beginning of the for-loop below.
     };
@@ -56,7 +57,7 @@ int thread_sync()
 1. core_proc()
 It must be a short sequential function and does not have to consider synchronization.
 Synchronization is the role of thread_runner() which is a hidden local function in BLthread.c.
-core_proc() does only something short and soon return.
+core_proc() does only something short and soon returns.
 
 2. thread_sync()
 It controls iteration and synchronization. It lets BLthread framework execute core_proc() repeatedly.

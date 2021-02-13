@@ -1,5 +1,13 @@
 #ifndef BLTS_H_
 #define BLTS_H_
+/*!
+\file BLts.h
+\brief It is a middleware which makes high precision time measurement and logging easy.
+It depends only on time.h and stdio.h. It supplies the following functionalities.
+1) elapsed time measurement
+2) conversion from timespec to float/double
+3) very simple logging writing to a text file
+*/
 #ifdef __cplusplus
 #include    <ctime>
 #include    <cstdio>
@@ -63,7 +71,7 @@ contains printf style format descriptor and variables; e.g. "%s:%d", "hello", 10
 }
 
 /*!
-\brief simple logging tool recording timestamp
+\brief simple logging tool recording timestamp represented in seconds of UTC.
 */
 #define BLts_log(pf_, ...) { \
     struct timespec tnow_; BLts_getnow(&tnow_); \

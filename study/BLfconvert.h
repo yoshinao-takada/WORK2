@@ -12,14 +12,17 @@ extern "C" {
 /*!
 \brief convert uint8_t array to float array
 */
-void BLfconvert_r32_from_u8(void* dst, const void* src, size_t count);
+void BLfconvert_r32_from_u8(BL1r32_t* dst, const BL1u8_t* src, size_t count);
 
-void BLfconvert_u8_from_r32(void* dst, const void* src, size_t count);
+/*!
+\brief convert float array to uint8_t array
+*/
+void BLfconvert_u8_from_r32(BL1u8_t* dst, const BL1r32_t* src, size_t count);
 
 /*!
 \brief convert float array to uint8_t array, adding offset before casting each element
 */
-void BLfconvert_u8_from_r32_offset(void* dst, const void* src, size_t count, float offset);
+void BLfconvert_u8_from_r32_offset(BL1u8_t* dst, const BL1r32_t* src, size_t count, float offset);
 
 #ifdef __cplusplus
 }
