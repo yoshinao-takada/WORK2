@@ -8,10 +8,10 @@ DEBUG_TARGET = $(DEBUG_TARGET_DIR)/libBLbase.a
 RELEASE_TARGET = $(RELEASE_TARGET_DIR)/libBLbase.a
 DEBUG_OBJECTS = $(DEBUG_OBJECT_DIR)/BLts.o $(DEBUG_OBJECT_DIR)/BLthread.o \
 	$(DEBUG_OBJECT_DIR)/BLprocess.o $(DEBUG_OBJECT_DIR)/BLfile.o $(DEBUG_OBJECT_DIR)/BLarray.o \
-	$(DEBUG_OBJECT_DIR)/BLringbuf.o
+	$(DEBUG_OBJECT_DIR)/BLringbuf.o $(DEBUG_OBJECT_DIR)/BLser.o
 RELEASE_OBJECTS = $(RELEASE_OBJECT_DIR)/BLts.o $(RELEASE_OBJECT_DIR)/BLthread.o \
 	$(RELEASE_OBJECT_DIR)/BLprocess.o $(RELEASE_OBJECT_DIR)/BLfile.o $(RELEASE_OBJECT_DIR)/BLarray.o \
-	$(RELEASE_OBJECT_DIR)/BLringbuf.o
+	$(RELEASE_OBJECT_DIR)/BLringbuf.o $(RELEASE_OBJECT_DIR)/BLser.o
 
 #-------------------- debug -------------------------------
 .PHONY	:	debug
@@ -44,6 +44,10 @@ $(DEBUG_OBJECT_DIR)/BLarray.o	:	BLarray.c BLarray.h BLbase.h
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
 $(DEBUG_OBJECT_DIR)/BLringbuf.o	:	BLringbuf.c BLringbuf.h
+	mkdir -p $(DEBUG_OBJECT_DIR)
+	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
+
+$(DEBUG_OBJECT_DIR)/BLser.o	:	BLser.c BLser.h
 	mkdir -p $(DEBUG_OBJECT_DIR)
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
@@ -84,6 +88,10 @@ $(RELEASE_OBJECT_DIR)/BLarray.o	:	BLarray.c BLarray.h BLbase.h
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 
 $(RELEASE_OBJECT_DIR)/BLringbuf.o	:	BLringbuf.c BLringbuf.h
+	mkdir -p $(RELEASE_OBJECT_DIR)
+	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
+
+$(RELEASE_OBJECT_DIR)/BLser.o	:	BLser.c BLser.h
 	mkdir -p $(RELEASE_OBJECT_DIR)
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 

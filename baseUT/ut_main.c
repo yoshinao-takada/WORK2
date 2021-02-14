@@ -4,6 +4,7 @@
 #include    "baseUT/UTarray.h"
 
 int ringbuf();
+int ser();
 
 int main(int argc, char* argv[])
 {
@@ -14,6 +15,7 @@ int main(int argc, char* argv[])
         err = UTcopy2D_4X4_to_2X2();
         err = UTcopy2D_4X4_to_4X4();
         err = ringbuf();
+        err = ser();
     } while (0);
     return err;
 }

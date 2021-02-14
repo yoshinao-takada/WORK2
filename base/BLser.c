@@ -1,8 +1,9 @@
-#include    "comm/BLser.h"
+#include    "base/BLser.h"
 #include    "base/BLsv.h"
 #include    "base/BLarray1D.h"
 #include    <errno.h>
 #include    <memory.h>
+#include    <string.h>
 
 static const char* BLserializable_4ccs[] = BLSERIALIZABLE4CC_TABLE;
 
@@ -19,7 +20,10 @@ static uint16_t size_24(const void* src) { return 24 + BYTES_4CC; }
 static uint16_t size_32(const void* src) { return 32 + BYTES_4CC; }
 static uint16_t size_48(const void* src) { return 48 + BYTES_4CC; }
 static uint16_t size_64(const void* src) { return 64 + BYTES_4CC; }
-static uint16_t size_cstr(const void* src) { return strlen((const char*)src) + 2 + BYTES_4CC; }
+static uint16_t size_cstr(const void* src) 
+{
+    return (uint16_t)(strlen((const char*)src) + 2 + BYTES_4CC);
+}
 static uint16_t size_array1D(const void* src)
 {
     pcBLarray1D_t a = (pcBLarray1D_t)src;
@@ -119,7 +123,7 @@ static int ser1r32(const uint8_t* src, uint8_t* dst)
 static int ser1r64(const uint8_t* src, uint8_t* dst)
 {
     *(int32_t*)dst = BLserializable_4cci32(BLserializable_1r64);
-    *(BL1r64_t*)(dst + BYTES_4CC) = *(const BL1r64_t*)src;
+    memcpy(dst + BYTES_4CC, src, sizeof(BL1r64_t));
     return 0;
 }
 static int ser2i8(const uint8_t* src, uint8_t* dst)
@@ -275,13 +279,16 @@ static int ser8r64(const uint8_t* src, uint8_t* dst)
 static int ser_cstr(const uint8_t* src, uint8_t* dst)
 {
     *(int32_t*)dst = BLserializable_4cci32(BLserializable_string);
-    uint16_t dst_len = (uint16_t)strlen(dst);
-    if (dst_len > BLSERIALIZABLE_STRLEN_MAX)
+    size_t copylen = (size_t)(*(uint16_t*)(dst + BYTES_4CC) = (uint16_t)strlen(src));
+    if (copylen <= BLSERIALIZABLE_STRLEN_MAX)
+    {
+        memcpy(dst + BYTES_4CC + sizeof(uint16_t), src, copylen);
+        return EXIT_SUCCESS;
+    }
+    else
     {
         return EINVAL;
     }
-    *(uint16_t*)(dst + BYTES_4CC) = dst_len;
-    memcpy(dst + BYTES_4CC + 2, src, (size_t)dst_len);
 }
 static int ser_array(int32_t i32cc4, const uint8_t* src, uint8_t* dst)
 {
@@ -289,13 +296,13 @@ static int ser_array(int32_t i32cc4, const uint8_t* src, uint8_t* dst)
     pcBLarray1D_t src_array = (pcBLarray1D_t)src;
     int err = EXIT_SUCCESS;
     do {
-        uint16_t dst_len = src_array->size[0] * src_array->size[1];
+        size_t dst_len = src_array->size[0] * src_array->size[1];
         if (dst_len > BLSERIALIZABLE_DATALEN_MAX)
         {
             err = EINVAL;
             break;
         }
-        *(uint16_t*)(dst + BYTES_4CC) = dst_len;
+        *(uint16_t*)(dst + BYTES_4CC) = src_array->size[1];
         memcpy(dst + BYTES_4CC + BYTES_SIZE, BLarray1D_begin(src_array), dst_len);
     } while (0);
     return err;
@@ -358,7 +365,7 @@ static int deser1r32(const uint8_t* src, uint8_t* dst)
 }
 static int deser1r64(const uint8_t* src, uint8_t* dst)
 {
-    *(BL1r64_t*)dst = *(const BL1r64_t*)(src + BYTES_4CC);
+    memcpy(dst, src + BYTES_4CC, sizeof(BL1r64_t));
     return 0;
 }
 static int deser2i8(const uint8_t* src, uint8_t* dst)
@@ -496,12 +503,13 @@ static int deser_cstr(const uint8_t *src, uint8_t* dst)
     }
     memcpy(dst, src + BYTES_4CC + BYTES_SIZE, src_len);
     *(dst + (ptrdiff_t)src_len) = '\0';
+    return EXIT_SUCCESS;
 }
 static int deser_array(BLserializable_ID_t id, const uint8_t *src, uint8_t* dst)
 {
     static const uint16_t element_byte_counts[] = { 1, 2, 4, 4, 8 };
     int index = (int)id - BLserializable_i8array;
-    if ((index < 0) || (index <= 5))
+    if ((index < 0) || (5 <= index))
     {
         return EINVAL;
     }
@@ -553,6 +561,20 @@ const char* BLserializable_4cc(BLserializable_ID_t id)
 int32_t     BLserializable_4cci32(BLserializable_ID_t id)
 {
     return *(const int32_t*)BLserializable_4cc(id);
+}
+
+BLserializable_ID_t BLserializable_ID(const uint8_t* _4cc)
+{
+    BLserializable_ID_t id = (BLserializable_ID_t)(-1);
+    for (int i = 0; i < sizeof(BLserializable_4ccs); i++)
+    {
+        if (BLeq4(_4cc, BLserializable_4ccs[i]))
+        {
+            id = (BLserializable_ID_t)i;
+            break;
+        }
+    }
+    return id;
 }
 
 BLserializable_estsize_f BLserializable_serialize_estimator(BLserializable_ID_t id)

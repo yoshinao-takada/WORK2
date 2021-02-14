@@ -1,6 +1,6 @@
 #ifndef BLBASE_SER_H_
 #define BLBASE_SER_H_
-#include    "comm/BLser_ID.h"
+#include    "base/BLser_ID.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -37,6 +37,10 @@ typedef int (*BLserializable_convert_f)(const uint8_t* src, uint8_t* dst);
 */
 const char* BLserializable_4cc(BLserializable_ID_t id);
 int32_t     BLserializable_4cci32(BLserializable_ID_t id);
+/*!
+\brief type ID corresponding to the 4CC.
+*/
+BLserializable_ID_t BLserializable_ID(const uint8_t* _4cc);
 
 /*!
 \brief get a size estimator for serialized image
