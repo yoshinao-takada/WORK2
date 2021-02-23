@@ -1,0 +1,13 @@
+@startuml
+[*] -> Active : Evt(*)
+Active -> [*] : Evt(end-request)
+state Active {
+    [*] -> no_data
+    no_data -> no_data : Evt(read),\nsleep(1-byte-time)\n[no data]
+    no_data -down-> got_data : Evt(read),\nput(read_queue,data,begin_mark)\n[with data]
+    got_data -up-> no_data : Evt(read),\nsleep(1-byte-time)\n[no data]
+    got_data -> got_data : Evt(read),\nput(read_queue, data, no_mark)\n[with data]
+}
+Active : enter: init
+Active : exit: destroy
+@enduml

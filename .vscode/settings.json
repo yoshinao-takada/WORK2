@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "blsiotty.h": "c",
+        "errno.h": "c",
+        "pthread.h": "c",
+        "signal.h": "c",
+        "blbase.h": "c",
+        "time.h": "c"
+    }
+}

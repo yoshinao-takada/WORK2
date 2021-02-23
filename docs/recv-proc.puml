@@ -1,0 +1,13 @@
+@startuml
+[*] -> Active : Ev(*)
+Active -> [*] : Ev(end_request)
+state Active {
+    WaitHeader -> WaitHeader : Ev(read)\nsleep(packet-header-time)\n[!header was received]
+    WaitHeader -> WaitHeader : Ev(read)\ndiscard buffer head\n[invalid header was received]
+    WaitHeader -down-> WaitPayload : Ev(read)\nsleep(remaining-time)\n[header was received]
+    WaitPayload -> WaitPayload : Ev(read)\nsleep(remaining-time)\n[!payload was received]
+    WaitPayload -up-> WaitHeader : Ev(read)\ndispatch\n[payload was received]
+}
+Active : enter : Init
+Active : exit : Destroy
+@enduml

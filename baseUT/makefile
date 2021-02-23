@@ -39,7 +39,7 @@ $(DEBUG_OBJECT_DIR)/UTarray.o	:	UTarray.c UTarray.h
 	mkdir -p $(DEBUG_OBJECT_DIR)
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
-$(DEBUG_OBJECT_DIR)/ringbuf.o	:	ringbuf.c ringbuf.h
+$(DEBUG_OBJECT_DIR)/ringbuf.o	:	ringbuf.c
 	mkdir -p $(DEBUG_OBJECT_DIR)
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
@@ -82,7 +82,7 @@ $(RELEASE_OBJECT_DIR)/UTarray.o	:	UTarray.c UTarray.h
 	mkdir -p $(RELEASE_OBJECT_DIR)
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 
-$(RELEASE_OBJECT_DIR)/ringbuf.o	:	ringbuf.c ringbuf.h
+$(RELEASE_OBJECT_DIR)/ringbuf.o	:	ringbuf.c
 	mkdir -p $(RELEASE_OBJECT_DIR)
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 

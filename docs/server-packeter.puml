@@ -1,0 +1,18 @@
+@startuml
+[*] -> Active : Evt(*)
+Active -> [*] : Evt(end-request)
+state Active {
+    empty : exit: remove header from queue
+    empty : do: trigger(get)
+    empty -> empty : Evt(get),\nsleep(1-packet-header time)\n[len(data) < len(packet header)]
+    empty -down-> had_header : Evt(get)\n[len(data) > len(packet header)]
+    had_header : enter: parse header, clear header in queue
+    had_header : empty: parse payload, clear payload in queue
+    had_header : \tdispatch parsed packet info if packet is valid.
+    had_header : do: trigger(get)
+    had_header -up-> empty : Evt(get),\n[len(data) < len(packet header)]
+    had_header -> had_header : Evt(get),\n[len(data) >= len(packet header)]
+}
+Active : enter: Init
+Active : exit: Destroy
+@enduml

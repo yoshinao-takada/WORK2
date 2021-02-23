@@ -1,0 +1,16 @@
+packet format definitions
+
+1. packet format
+[PACKET] = [HEADER][PAYLOAD]
+
+[HEADER] = [RA][SA][SYNC][PLL][PID][CRC]
+[RA]: recipient address (1 byte)
+[SA]: sender address (1 byte)
+[SYNC]: 0xAA (1byte)
+[PLL]: payload length including payload CRC (1 byte)
+[PID]: packet ID (2 bytes)
+[CRC]: header CRC (2 bytes)
+
+[PAYLOAD] = [DATA][CRC]
+[DATA]: payload data (PLL - 2 bytes)
+[CRC]: payload CRC (2 bytes)

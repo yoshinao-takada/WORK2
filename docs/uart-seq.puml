@@ -1,0 +1,30 @@
+@startuml
+control reader
+entity ringbuf
+control packeter
+entity dispatcher
+participant clients
+reader -> reader : mark = begin_mark
+loop until end_request
+    reader -> reader : try-read
+    alt no_data
+        reader -> reader : mark = begin_mark
+        note over reader: sleep 1-byte time
+    else with_data
+        reader -> ringbuf : put with mark
+        reader -> reader : mark = no_mark
+    end
+    loop until ringbuf empty
+        ringbuf <- packeter : get data
+        alt packeter has data
+            packeter -> packeter : parse data
+            alt complete_packet
+                packeter -> dispatcher : the completed packet
+                dispatcher -> clients : dispatch
+            end
+            packeter -> packeter : estimate sleep time
+            note over packeter : sleep estimated time
+        end
+    end
+end
+@enduml
