@@ -35,6 +35,14 @@ int BLringbuf_new(uint8_t count_bits, pBLringbuf_t* ppobj);
     otherwise EXIT_SUCCESS.
 */
 int BLringbuf_put(pBLringbuf_t obj, uint16_t byte_count, const uint8_t* data, uint16_t* actual);
+/*!
+\brief pub byte string. Old contents are discarded if the buffer is full.
+\param obj [in,out] ring buffer object
+\param byte_count [in] byte count of data
+\param data [in] data to put
+\return ENOBUFS: any parts of old contents are discarded. Otherwise EXIT_SUCCESS.
+*/
+int BLringbuf_putforce(pBLringbuf_t obj, uint16_t byte_count, const uint8_t* data);
 
 /*!
 \brief get byte string
@@ -60,55 +68,6 @@ uint16_t BLringbuf_available_space(pcBLringbuf_t obj);
 \return current availabel data byte count
 */
 uint16_t BLringbuf_available_data(pcBLringbuf_t obj);
-
-typedef enum {
-    BLringbuf_nomark,
-    BLringbuf_beginmark,
-} BLringbuf_mark_t;
-/*!
-\brief put a byte sequence with marks. Each bytes are extended to packed uint16_t numbers
-combined { each byte, mark }. Only the first byte is paired with the mark specified by argument
-mark. Subsequent bytes are paird with BLRINGBUF_NOBEGINMARK.
-\param obj [in,out] ring buffer object
-\param byte_count [in] byte count of data
-\param data [in] data to put
-\param actual [out] actually put byte count
-\param mark [in] 
-*/
-int BLringbuf_put_with_marks(
-    pBLringbuf_t obj,
-    uint16_t byte_count,
-    const uint8_t* data,
-    uint16_t* actual,
-    BLringbuf_mark_t mark);
-
-/*!
-\brief get a byte count between the read pointer to the first BLringbuf_beginmark, excluding
-the BLringbuf_beginmark. If there is no BLringbuf_beginmark, get the byte count between
-the read pointer to the write counter. The byte count counts only for data bytes but not for
-marks of BLringbuf_mark_t.
-\param obj [in,out] ring buffer object
-\param available [out] available data byte count
-\return BLringbuf_beginmark : the mark was found, BLringbuf_nomark : BLringbuf_beginmark was not found.
-*/
-BLringbuf_mark_t BLringbuf_available_data_with_marks(pcBLringbuf_t obj, uint16_t* available);
-
-/*!
-\brief get a byte sequence stripping the mark put by BLringbuf_put_with_marks().
-    This method does not check wrptr boundary. byte_count must be given using
-    BLringbuf_available_data_with_marks().
-\param obj [in,out] ring buffer object
-\param byte_count [in] byte count of data
-\param data [in] data to put
-\param actual [out] actually put byte count
-\return ENODATA: Not all data was gotten because buffer has sufficient data,
-    otherwise EXIT_SUCCESS.
-*/
-int BLringbuf_get_with_marks(
-    pBLringbuf_t obj,
-    uint16_t byte_count,
-    uint8_t* data);
-
 #pragma endregion ring_buffer_without_exclusive_control
 #pragma region ring_buffer_with_exclusive_control
 /*!

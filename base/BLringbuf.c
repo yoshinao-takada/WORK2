@@ -52,6 +52,30 @@ int BLringbuf_put(pBLringbuf_t obj, uint16_t byte_count, const uint8_t* data, ui
     return err;
 }
 
+int BLringbuf_putforce(pBLringbuf_t obj, uint16_t byte_count, const uint8_t* data)
+{
+    int err = EXIT_SUCCESS;
+    do {
+        uint16_t discard_bytes = 0;
+        uint16_t available_space = BLringbuf_available_space(obj);
+        if (byte_count > available_space)
+        {
+            err = ENOBUFS;
+            discard_bytes = byte_count - available_space;
+        }
+        for (uint16_t i = 0; i < byte_count; i++)
+        {
+            if (i < discard_bytes)
+            {
+                obj->rdptr = (obj->rdptr + 1) & obj->mask;
+            }
+            obj->buffer[obj->wrptr] = data[i];
+            obj->wrptr = (obj->wrptr + 1) & obj->mask;
+        }
+    } while (0);
+    return err;
+}
+
 int BLringbuf_get(pBLringbuf_t obj, uint16_t byte_count, uint8_t* data, uint16_t* actual)
 {
     int err = EXIT_SUCCESS;
@@ -98,73 +122,6 @@ uint16_t BLringbuf_available_data(pcBLringbuf_t obj)
         diff &= obj->mask;
     }
     return diff;
-}
-
-
-int BLringbuf_put_with_marks(
-    pBLringbuf_t obj,
-    uint16_t byte_count,
-    const uint8_t* data,
-    uint16_t* actual,
-    BLringbuf_mark_t mark
-) {
-    int err = EXIT_SUCCESS;
-    do {
-        uint16_t available_bytes = BLringbuf_available_space(obj);
-        uint16_t available_wbytes =  available_bytes >> 1;
-        if (byte_count > available_wbytes)
-        {
-            *actual = available_wbytes;
-            err = ENOBUFS;
-        }
-        else
-        {
-            *actual = byte_count;
-        }
-        uint16_t actual_copy_byte_count = *actual;
-        uint8_t mark_u8 = (uint8_t)mark;
-        for (uint16_t i = 0; i != actual_copy_byte_count; i++)
-        {
-            obj->buffer[obj->wrptr] = data[i];
-            obj->wrptr = (obj->wrptr + 1) & obj->mask;
-            obj->buffer[obj->wrptr] = mark_u8;
-            obj->wrptr = (obj->wrptr + 1) & obj->mask;
-            mark_u8 = (uint8_t)BLringbuf_nomark;
-        }
-    } while (0);
-    return err;
-}
-
-BLringbuf_mark_t BLringbuf_available_data_with_marks(pcBLringbuf_t obj, uint16_t* available)
-{
-    uint16_t available_ = 0;
-    uint8_t mark = (uint8_t)BLringbuf_nomark;
-    for (uint16_t u = obj->rdptr; u != obj->wrptr; u = (u + 2) & obj->mask)
-    {
-        uint16_t mark_ptr = (u + 1) & obj->mask;
-        if ((available_ != 0) /* the 1st begin mark is skipped */ &&
-            ((uint8_t)BLringbuf_beginmark) == (mark = obj->buffer[mark_ptr]))
-        { // a begin mark was found
-            break;
-        }
-        available_++;
-    }
-    *available = available_;
-    return (BLringbuf_mark_t)mark;
-}
-
-int BLringbuf_get_with_marks(
-    pBLringbuf_t obj,
-    uint16_t byte_count,
-    uint8_t* data
-) {
-    int err = EXIT_SUCCESS;
-    for (uint16_t i = 0; i < byte_count; i++)
-    {
-        data[i] = obj->buffer[obj->rdptr];
-        obj->rdptr = (obj->rdptr + 2) & obj->mask;
-    }
-    return err;
 }
 
 #pragma endregion ring_buffer_without_exclusive_control

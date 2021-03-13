@@ -1,5 +1,5 @@
-DEBUG_CC_FLAGS = -I.. -c -g
-RELEASE_CC_FLAGS = -I.. -c -O3
+DEBUG_CC_FLAGS = -I.. -c -g -w
+RELEASE_CC_FLAGS = -I.. -c -O3 -w
 DEBUG_TARGET_DIR = ../debug
 RELEASE_TARGET_DIR = ../release
 DEBUG_OBJECT_DIR = o/debug

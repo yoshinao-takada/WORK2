@@ -6,8 +6,10 @@ DEBUG_OBJECT_DIR = o/debug
 RELEASE_OBJECT_DIR = o/release
 DEBUG_TARGET = $(DEBUG_TARGET_DIR)/commUT.exe
 RELEASE_TARGET = $(RELEASE_TARGET_DIR)/commUT.exe
-DEBUG_OBJECTS = $(DEBUG_OBJECT_DIR)/ut_main.o $(DEBUG_OBJECT_DIR)/crc.o
-RELEASE_OBJECTS = $(RELEASE_OBJECT_DIR)/ut_main.o $(DEBUG_OBJECT_DIR)/crc.o
+DEBUG_OBJECTS = $(DEBUG_OBJECT_DIR)/ut_main.o $(DEBUG_OBJECT_DIR)/crc.o \
+	$(DEBUG_OBJECT_DIR)/packet.o
+RELEASE_OBJECTS = $(RELEASE_OBJECT_DIR)/ut_main.o $(DEBUG_OBJECT_DIR)/crc.o \
+	$(RELEASE_OBJECT_DIR)/packet.o
 
 #-------------------- debug -------------------------------
 .PHONY	:	debug
@@ -29,6 +31,10 @@ $(DEBUG_OBJECT_DIR)/ut_main.o	:	ut_main.c
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
 $(DEBUG_OBJECT_DIR)/crc.o	:	crc.c
+	mkdir -p $(DEBUG_OBJECT_DIR)
+	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
+
+$(DEBUG_OBJECT_DIR)/packet.o	:	packet.c
 	mkdir -p $(DEBUG_OBJECT_DIR)
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
@@ -60,6 +66,10 @@ $(RELEASE_OBJECT_DIR)/ut_main.o	:	ut_main.c
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 
 $(RELEASE_OBJECT_DIR)/crc.o	:	crc.c
+	mkdir -p $(RELEASE_OBJECT_DIR)
+	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
+
+$(RELEASE_OBJECT_DIR)/packet.o	:	packet.c
 	mkdir -p $(RELEASE_OBJECT_DIR)
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 

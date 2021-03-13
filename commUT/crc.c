@@ -71,20 +71,21 @@ static  int crc_error()
         }
         BLcrc_put16(&crc, &crc_temp);
         if (crc.crc.u16[0])
-        {
+        { // check CRC with valid data
             UT_SHOWBREAK(stderr, __FUNCTION__, __LINE__, (err = EXIT_FAILURE));
         }
         for (int i = 0; i < ARRAYSIZE(data16); i++)
-        {
+        { // apply error bits
             data16[i] ^= err_bits[i];
         }
+        // check CRC with bit error data
         BLcrc_init(&crc, CRC_CCITT_LE, 0);
         BLcrc_puts(&crc, (const uint8_t*)data16, sizeof(data16));
         BLcrc_put16(&crc, &crc_temp);
         printf("crc = 0x%04x\n", crc.crc.u16[0]);
         int on_bit = count_bits(crc.crc.u16[0]);
         if (on_bit < 7)
-        {
+        { // CRC check value contains more than or equal to 7 logical one-bits
             UT_SHOWBREAK(stderr, __FUNCTION__, __LINE__, (err = EXIT_FAILURE));
         }
     } while (0);

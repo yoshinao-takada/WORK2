@@ -5,6 +5,12 @@
         "pthread.h": "c",
         "signal.h": "c",
         "blbase.h": "c",
-        "time.h": "c"
+        "time.h": "c",
+        "ccomplex": "cpp",
+        "complex": "cpp",
+        "complex.h": "c",
+        "random": "cpp",
+        "mkl.h": "c",
+        "mkl_dfti.h": "c"
     }
 }
