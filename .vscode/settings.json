@@ -11,6 +11,10 @@
         "complex.h": "c",
         "random": "cpp",
         "mkl.h": "c",
-        "mkl_dfti.h": "c"
+        "mkl_dfti.h": "c",
+        "bllogger.h": "c",
+        "blheapdebug.h": "c",
+        "blfile.h": "c",
+        "malloc.h": "c"
     }
 }

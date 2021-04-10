@@ -57,6 +57,26 @@ typedef void* (*BLcallback_t)(void* param);
 #define UT_SHOWBREAK(_pf_, _testname_, _testline_, _result_) \
     UT_SHOW(_pf_, _testname_, _testline_, _result_); break;
 
+// nearly equal 
+#define BL_EQ_F(x0_, x1_, xtol_) ( \
+    (fabsf((x0_) + (x1_)) > xtol_) ? \
+    (fabsf((x0_) - (x1_))/fabsf((x0_) + (x1_)) < xtol_) : \
+    (fabsf((x0_) - (x1_))/(fabsf((x0_) + (x1_)) + xtol_) < xtol_) \
+)
+
+#define BL_EQ(x0_, x1_, xtol_) ( \
+    (fabs((x0_) + (x1_)) > xtol_) ? \
+    (fabs((x0_) - (x1_))/fabs((x0_) + (x1_)) < xtol_) : \
+    (fabs((x0_) - (x1_))/(fabs((x0_) + (x1_)) + xtol_) < xtol_) \
+)
+
+#define BL_EQ_CF(x0_, x1_, xtol_) (\
+    BL_EQ_F(crealf(x0_), crealf(x1_), xtol_) && BL_EQ_F(cimagf(x0_), cimagf(x1_), xtol_) \
+)
+
+#define BL_EQ_C(x0_, x1_, xtol_) (\
+    BL_EQ(creal(x0_), creal(x1_), xtol_) && BL_EQ(cimag(x0_), cimag(x1_), xtol_) \
+)
 #ifdef __cplusplus
 }
 #endif

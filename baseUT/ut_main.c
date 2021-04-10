@@ -5,17 +5,23 @@
 
 int ringbuf();
 int ser();
+int ringbufex();
+int heapdebug();
+int bsearch();
 
 int main(int argc, char* argv[])
 {
     int err = EXIT_SUCCESS;
     do {
-        elapsed(); // elapsed time measurement
-        thread_sync(); // thread synchronization
-        err = UTcopy2D_4X4_to_2X2();
-        err = UTcopy2D_4X4_to_4X4();
-        err = ser();
-        err = ringbuf();
+        // elapsed(); // elapsed time measurement
+        // thread_sync(); // thread synchronization
+        // err |= UTcopy2D_4X4_to_2X2();
+        // err |= UTcopy2D_4X4_to_4X4();
+        // err |= ser();
+        // err |= ringbuf();
+        // err |= ringbufex();
+        err |= heapdebug();
+        err |= bsearch();
     } while (0);
     return err;
 }

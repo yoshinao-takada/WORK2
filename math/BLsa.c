@@ -346,13 +346,21 @@ static int fft(uint32_t realnumsize, pcBLarray1D_t in, pBLarray1D_t out)
     DFTI_DESCRIPTOR_HANDLE hDescriptor = NULL;
     do {
         enum DFTI_CONFIG_VALUE prec = (realnumsize == sizeof(BL1r32_t)) ? DFTI_SINGLE : DFTI_DOUBLE;
-        mkl_status = DftiCreateDescriptor(&hDescriptor, prec, DFTI_COMPLEX_COMPLEX, 1, (MKL_LONG)in->size[1]);
+        mkl_status = DftiCreateDescriptor(&hDescriptor, prec, DFTI_COMPLEX, 1, (MKL_LONG)in->size[1]);
         if (mkl_status != DFTI_NO_ERROR)
         {
             fprintf(stderr, "%s,%s,%d,mkl_status=%ld\n", __FILE__, __FUNCTION__, __LINE__, mkl_status);
             fft_checkerr("DftiCreateDescriptor", mkl_status);
             err = EFAULT;
-            // break;
+            break;
+        }
+        mkl_status = DftiSetValue(hDescriptor, DFTI_PLACEMENT, DFTI_NOT_INPLACE);
+        if (mkl_status != DFTI_NO_ERROR)
+        {
+            fprintf(stderr, "%s,%s,%d,mkl_status=%ld\n", __FILE__, __FUNCTION__, __LINE__, mkl_status);
+            fft_checkerr("DftiSetValue", mkl_status);
+            err = EFAULT;
+            break;
         }
         mkl_status = DftiCommitDescriptor(hDescriptor);
         if (mkl_status != DFTI_NO_ERROR)
@@ -360,7 +368,7 @@ static int fft(uint32_t realnumsize, pcBLarray1D_t in, pBLarray1D_t out)
             fprintf(stderr, "%s,%s,%d,mkl_status=%ld\n", __FILE__, __FUNCTION__, __LINE__, mkl_status);
             fft_checkerr("DftiCommitDescriptor", mkl_status);
             err = EFAULT;
-            // break;
+            break;
         }
         mkl_status = DftiComputeForward(hDescriptor, (void*)BLarray1D_begin(in), (void*)BLarray1D_begin(out));
         if (mkl_status != DFTI_NO_ERROR)
@@ -368,9 +376,14 @@ static int fft(uint32_t realnumsize, pcBLarray1D_t in, pBLarray1D_t out)
             fprintf(stderr, "%s,%s,%d,mkl_status=%ld\n", __FILE__, __FUNCTION__, __LINE__, mkl_status);
             fft_checkerr("DftiComputeForward", mkl_status);
             err = EFAULT;
-            // break;
+            break;
         }
-        err = EXIT_SUCCESS; 
+        BL1r32_t normalizer = 1.0f / (BL1r32_t)out->size[1];
+        BL1c64_t* i_out = (BL1c64_t*)BLarray1D_begin(out);
+        for (uint16_t i = 0; i < out->size[1]; i++)
+        {
+            i_out[i] *= normalizer;
+        }
     } while (0);
     return err;
 }
@@ -381,10 +394,18 @@ static int ifft(uint32_t realnumsize, pcBLarray1D_t in, pBLarray1D_t out)
     DFTI_DESCRIPTOR_HANDLE hDescriptor = NULL;
     do {
         enum DFTI_CONFIG_VALUE prec = (realnumsize == sizeof(BL1r32_t)) ? DFTI_SINGLE : DFTI_DOUBLE;
-        mkl_status = DftiCreateDescriptor(&hDescriptor, prec, DFTI_COMPLEX_COMPLEX, 1, (MKL_LONG)in->size[1]);
+        mkl_status = DftiCreateDescriptor(&hDescriptor, prec, DFTI_COMPLEX, 1, (MKL_LONG)in->size[1]);
         if (mkl_status != DFTI_NO_ERROR)
         {
             fprintf(stderr, "%s,%s,%d,mkl_status=%ld\n", __FILE__, __FUNCTION__, __LINE__, mkl_status);
+            err = EFAULT;
+            break;
+        }
+        mkl_status = DftiSetValue(hDescriptor, DFTI_PLACEMENT, DFTI_NOT_INPLACE);
+        if (mkl_status != DFTI_NO_ERROR)
+        {
+            fprintf(stderr, "%s,%s,%d,mkl_status=%ld\n", __FILE__, __FUNCTION__, __LINE__, mkl_status);
+            fft_checkerr("DftiSetValue", mkl_status);
             err = EFAULT;
             break;
         }

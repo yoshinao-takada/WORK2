@@ -17,7 +17,7 @@ typedef const BLarray1D_t *pcBLarray1D_t;
 
 #define BLarray1D_alloc(ptr_var, _size_) \
     (ptr_var) = (pBLarray1D_t)malloc(sizeof(BLarray1D_t) + (_size_)[0] * (_size_)[1]); \
-    BLcopy2((ptr_var)->size, (_size_));
+    if (ptr_var) { BLcopy2((ptr_var)->size, (_size_)); }
 
 #define BLarray1D_begin(ptr_var)    ((ptr_var)->buffer)
 #define BLarray1D_at(ptr_var, offset) \

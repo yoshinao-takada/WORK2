@@ -1,4 +1,4 @@
-MKLROOT = /opt/intel/sw_dev_tools/mkl
+MKLROOT = /opt/intel/sw_dev_tools/compilers_and_libraries_2020.2.254/linux/mkl
 MKL_INC = -DMKL_ILP64 -I$(MKLROOT)/include
 DEBUG_CC_FLAGS = $(MKL_INC) -I.. -c -g -w
 RELEASE_CC_FLAGS = $(MKL_INC) -I.. -c -O3 -w
@@ -8,8 +8,8 @@ DEBUG_OBJECT_DIR = o/debug
 RELEASE_OBJECT_DIR = o/release
 DEBUG_TARGET = $(DEBUG_TARGET_DIR)/libBLmath.a
 RELEASE_TARGET = $(RELEASE_TARGET_DIR)/libBLmath.a
-DEBUG_OBJECTS = $(DEBUG_OBJECT_DIR)/BLsa.o
-RELEASE_OBJECTS = $(RELEASE_OBJECT_DIR)/BLsa.o
+DEBUG_OBJECTS = $(DEBUG_OBJECT_DIR)/BLsa.o $(DEBUG_OBJECT_DIR)/BLpoly.o
+RELEASE_OBJECTS = $(RELEASE_OBJECT_DIR)/BLsa.o $(RELEASE_OBJECT_DIR)/BLpoly.o
 
 #--------------------- debug --------------------------------
 .PHONY	:	debug
@@ -22,6 +22,10 @@ $(DEBUG_TARGET)	:	$(DEBUG_OBJECTS)
 	ranlib $@
 
 $(DEBUG_OBJECT_DIR)/BLsa.o	:	BLsa.c BLsa.h
+	mkdir -p $(DEBUG_OBJECT_DIR)
+	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
+
+$(DEBUG_OBJECT_DIR)/BLpoly.o	:	BLpoly.c BLpoly.h
 	mkdir -p $(DEBUG_OBJECT_DIR)
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
@@ -42,6 +46,10 @@ $(RELEASE_TARGET)	:	$(RELEASE_OBJECTS)
 	ranlib $@
 
 $(RELEASE_OBJECT_DIR)/BLsa.o	:	BLsa.c BLsa.h
+	mkdir -p $(RELEASE_OBJECT_DIR)
+	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
+
+$(RELEASE_OBJECT_DIR)/BLpoly.o	:	BLpoly.c BLpoly.h
 	mkdir -p $(RELEASE_OBJECT_DIR)
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 

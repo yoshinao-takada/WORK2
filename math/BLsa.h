@@ -16,6 +16,8 @@ typedef struct {
     BL1r32_t dt; // time step
 } BLsaconf_t, *pBLsaconf_t;
 typedef const BLsaconf_t *pcBLsaconf_t;
+#define BLsaconf_initbytimestep(point_, dt_) { point_, 0.5f / ((dt_) * (point_)), dt_ }
+#define BLsaconf_initbyfreqstep(point_, df_) { point_, df_, 0.5f / ((df_) * (point_)) }
 
 typedef enum {
     // create complex number array filled with zeros

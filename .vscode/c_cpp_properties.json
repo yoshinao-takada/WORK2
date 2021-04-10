@@ -4,11 +4,12 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/opt/intel/sw_dev_tools/mkl/include/**"
+                "/opt/intel/sw_dev_tools/compilers_and_libraries_2020.2.254/linux/mkl/include/**"
             ],
             "defines": [
                 "__USE_ISOC11",
-                "MATH_WORK_DIR=\"../../WorkData/math/\""
+                "MATH_WORK_DIR=\"../../WorkData/math/\"",
+                "BASE_WORK_DIR=\"../../WorkData/base/\""
             ],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c11",

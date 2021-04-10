@@ -80,9 +80,13 @@ int BLfile_open(FILE* *ppf, const char* path, const char* mode)
         if (*mode == 'a' || *mode == 'A' || *mode == 'w' || *mode == 'W')
         {
             char* dirpath = BLfile_copydirpath(path);
-            if (EXIT_SUCCESS != (err = BLfile_create_directories(dirpath)))
+            if (dirpath)
             {
-                break;
+                if (EXIT_SUCCESS != (err = BLfile_create_directories(dirpath)))
+                {
+                    break;
+                }
+                BLSAFEFREE(&dirpath);
             }
             *ppf = fopen(path, mode);
             if (*ppf == NULL)
