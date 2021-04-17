@@ -48,6 +48,13 @@ typedef uint64_t ULONGLONG;
 // this type is identical to the thread start routine of pthread
 typedef void* (*BLcallback_t)(void* param);
 
+// generic parameter for BLcallback_t functions
+typedef struct {
+    void* context;
+    void* variables;
+} BLparams_t, *pBLparams_t;
+typedef const BLparams_t *pcBLparams_t;
+
 #define IF_TRUE_BREAK(_condition_) if (_condition_) { break; }
 #define IF_TRUE_SETERRBREAK(_condition_,_err_,_err_value_) if(_condition_) { _err_ = _err_value_; break; }
 

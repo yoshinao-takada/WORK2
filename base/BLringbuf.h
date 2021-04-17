@@ -119,6 +119,17 @@ All the content pointers are freed by free(BLringbuf_getptr(obj));
 */
 void BLringbuf_clearptr(pBLringbuf_t obj);
 
+/*!
+\brief get a size index which is sufficient to hold the number of pointers.
+\param count [in] number of elements which can be held in the buffer.
+\param element_size [in] size of each element
+\return size index for count_bits of BLringbuf_new(). If (count * element_size) is too large, return 0.
+*/
+uint8_t BLringbuf_sizeindex(uint16_t count, uint16_t element_size);
+
+// size index calculator for (void*) buffer
+#define BLringbuf_sizeindex_for_ptr(count) BLringbuf_sizeindex(count, sizeof(void*))
+
 #pragma endregion ring_buffer_without_exclusive_control
 #pragma region ring_buffer_with_exclusive_control
 /*!

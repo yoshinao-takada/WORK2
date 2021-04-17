@@ -4,8 +4,10 @@
 #include "base/BLsv.h"
 #include "base/BLfile.h"
 #include <malloc.h>
+#include <pthread.h>
 
 static pBLheapdebug_t s_workdebug = NULL;
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 pBLheapdebug_t BLheapdebug_getwork()
 {
@@ -137,6 +139,7 @@ static int compare_entries(const void* pv0, const void* pv1, const void* params)
 }
 static void* mymalloc(size_t size, const void* caller)
 {
+    pthread_mutex_lock(&mutex);
     void* return_ptr = NULL;
     // Step 1: disable recording heap operation
     BLheapdebug_swap_hooks(&s_workdebug->apis);
@@ -158,6 +161,7 @@ static void* mymalloc(size_t size, const void* caller)
 
     // Step 4: enable recording heap operation and return
     BLheapdebug_swap_hooks(&s_workdebug->apis);
+    pthread_mutex_unlock(&mutex);
     return return_ptr;
 }
 
@@ -183,6 +187,7 @@ static int notmatch(uint32_t index, pcBLheapentry_t entry)
 }
 static void myfree(void* ptr, const void* caller)
 {
+    pthread_mutex_lock(&mutex);
     // Step 1: disable recording heap operation
     BLheapdebug_swap_hooks(&s_workdebug->apis);
 
@@ -214,10 +219,12 @@ static void myfree(void* ptr, const void* caller)
 
     // Step 4: enable recording heap operation
     BLheapdebug_swap_hooks(&s_workdebug->apis);
+    pthread_mutex_unlock(&mutex);
 }
 
 static void* myrealloc(void* ptr, size_t size, const void* caller)
 {
+    pthread_mutex_lock(&mutex);
     // Step 1: disable recording heap operation
     BLheapdebug_swap_hooks(&s_workdebug->apis);
 
@@ -263,5 +270,6 @@ static void* myrealloc(void* ptr, size_t size, const void* caller)
 
     // Step 4: enable recording heap operation
     BLheapdebug_swap_hooks(&s_workdebug->apis);
+    pthread_mutex_unlock(&mutex);
     return new_ptr;
 }

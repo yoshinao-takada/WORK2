@@ -177,7 +177,7 @@ int BLringbuf_putptr(pBLringbuf_t obj, void* pv)
     uint16_t transfer_size = sizeof(pv);
     do {
         uint16_t available_space = BLringbuf_available_space(obj);
-        if (available_space == 0)
+        if (available_space < transfer_size)
         {
             err = ENOSPC;
             break;
@@ -200,10 +200,33 @@ void* BLringbuf_getptr(pBLringbuf_t obj)
 
 void BLringbuf_clearptr(pBLringbuf_t obj)
 {
-    for (void* pv; pv = BLringbuf_getptr(obj); )
+    for (void* pv = BLringbuf_getptr(obj); pv; pv = BLringbuf_getptr(obj))
     {
         free(pv);
     }
+}
+
+uint8_t BLringbuf_sizeindex(uint16_t count, uint16_t element_size)
+{
+    uint32_t byte_count = (uint32_t)count * (uint32_t)element_size;
+    uint32_t buffer_size = 1;
+    uint16_t index = 0;
+    do {
+        if (byte_count >= 0x10000)
+        {
+            break;
+        }
+        while ((buffer_size - 1) < byte_count)
+        {
+            buffer_size = (buffer_size << 1);
+            index++;
+        }
+        if (buffer_size >= 0x10000)
+        {
+            index = 0;
+        }
+    } while (0);
+    return index;
 }
 #pragma endregion ring_buffer_without_exclusive_control
 #pragma region ring_buffer_with_exclusive_control

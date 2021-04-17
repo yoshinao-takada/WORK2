@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
         // err |= UTcopy2D_4X4_to_2X2();
         // err |= UTcopy2D_4X4_to_4X4();
         // err |= ser();
-        // err |= ringbuf();
+        err |= ringbuf();
         // err |= ringbufex();
         err |= heapdebug();
         err |= bsearch();

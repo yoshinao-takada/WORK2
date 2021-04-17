@@ -6,6 +6,8 @@
 static int available_space();
 static int available_data();
 static int random_write_read();
+static int size_index();
+static int ptr_contents();
 
 int ringbuf()
 {
@@ -20,6 +22,14 @@ int ringbuf()
             break;
         }
         if (EXIT_SUCCESS != (err = random_write_read()))
+        {
+            break;
+        }
+        if (EXIT_SUCCESS != (err = size_index()))
+        {
+            break;
+        }
+        if (EXIT_SUCCESS != (err = ptr_contents()))
         {
             break;
         }
@@ -201,5 +211,84 @@ static int random_write_read()
     } while (0);
     BLSAFEFREE(&ringbuf);
     UT_SHOW(stdout, __FUNCTION__, __LINE__, err);
+    return err;
+}
+
+static int size_index()
+{
+    int err = EXIT_SUCCESS;
+    pBLringbuf_t buf = NULL;
+    do {
+        uint16_t count = 768;
+        uint8_t index = BLringbuf_sizeindex_for_ptr(count);
+        err = BLringbuf_new(index, &buf);
+        if (err)
+        {
+            UT_SHOWBREAK(stderr, __FUNCTION__, __LINE__, err);
+        }
+        uint16_t available_space = BLringbuf_available_space(buf);
+        if (available_space < (count * sizeof(void*)))
+        {
+            UT_SHOWBREAK(stderr, __FUNCTION__, __LINE__, (err = EXIT_FAILURE));
+        }
+        BLSAFEFREE(&buf);
+        index--;
+        err = BLringbuf_new(index, &buf);
+        if (err)
+        {
+            UT_SHOWBREAK(stderr, __FUNCTION__, __LINE__, err);
+        }
+        available_space = BLringbuf_available_space(buf);
+        if (available_space >= (count * sizeof(void*)))
+        {
+            UT_SHOWBREAK(stderr, __FUNCTION__, __LINE__, (err = EXIT_FAILURE));
+        }
+    } while (0);
+    BLSAFEFREE(&buf);
+    UT_SHOW(stdout, __FUNCTION__, __LINE__, err);
+    return err;
+}
+
+static int ptr_contents()
+{
+    int err = EXIT_SUCCESS;
+    pBLringbuf_t ringbuf = NULL;
+    do {
+        // init buffer
+        err = BLringbuf_new(BLringbuf_sizeindex_for_ptr(4), &ringbuf);
+        if (err)
+        {
+            UT_SHOWBREAK(stderr, __FUNCTION__, __LINE__, err);
+        }
+
+        // put pointers until buffer full
+        int i = 0;
+        for (; i < 10; i++)
+        {
+            if (BLringbuf_putptr(ringbuf, (void*)0xffff) == ENOSPC)
+            {
+                break;
+            }
+        }
+        if ((i == 10) || (i < 4))
+        {
+            UT_SHOWBREAK(stderr, __FUNCTION__, __LINE__, (err = EXIT_FAILURE));
+        }
+
+        // make buffer empty
+        do {
+            void* pv = BLringbuf_getptr(ringbuf);
+            if (!pv)
+            {
+                UT_SHOWBREAK(stderr, __FUNCTION__, __LINE__, (err = EXIT_FAILURE));
+            }
+        } while (--i);
+        uint16_t available_data = BLringbuf_available_data(ringbuf);
+        if (available_data != 0)
+        {
+            UT_SHOWBREAK(stderr, __FUNCTION__, __LINE__, (err = EXIT_FAILURE));
+        }
+    } while (0);
+    BLSAFEFREE(&ringbuf);
     return err;
 }
