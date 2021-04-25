@@ -238,12 +238,12 @@ static void* myrealloc(void* ptr, size_t size, const void* caller)
         BLheapdebug_save_abortreport(s_workdebug, ABORTREPORT_CSV, &entry);
         abort();
     }
-    if (ptr != new_ptr)
+    BLheapentry_t new_entry = { (uintptr_t)new_ptr, size, (uintptr_t)caller, { 0, 0 } };
+    timespec_get(&new_entry.timestamp, TIME_UTC);
+    BL2u32_t range;
+    if (ptr && (ptr != new_ptr))
     { // replace the entry
         BLheapentry_t old_entry = { (uintptr_t)ptr, 0, 0, { 0, 0 } };
-        BLheapentry_t new_entry = { (uintptr_t)new_ptr, size, (uintptr_t)caller, { 0, 0 } };
-        timespec_get(&new_entry.timestamp, TIME_UTC);
-        BL2u32_t range;
         BLbsearch_find((const void*)s_workdebug->entries, s_workdebug->entries_filled, sizeof(BLheapentry_t),
             compare_entries, (const void*)&old_entry, NULL, range);
         if (outofrange(&old_entry))
@@ -262,11 +262,11 @@ static void* myrealloc(void* ptr, size_t size, const void* caller)
         }
         BLbsearch_remove((void*)s_workdebug->entries, s_workdebug->entries_filled--, sizeof(BLheapentry_t),
             &old_entry, range[0]);
-        BLbsearch_find((const void*)s_workdebug->entries, s_workdebug->entries_filled, sizeof(BLheapentry_t),
-            compare_entries, (const void*)&new_entry, NULL, range);
-        BLbsearch_insert((void*)s_workdebug->entries,  s_workdebug->entries_filled++, sizeof(BLheapentry_t),
-            (const void*)&new_entry, range[1]);
     }
+    BLbsearch_find((const void*)s_workdebug->entries, s_workdebug->entries_filled, sizeof(BLheapentry_t),
+        compare_entries, (const void*)&new_entry, NULL, range);
+    BLbsearch_insert((void*)s_workdebug->entries,  s_workdebug->entries_filled++, sizeof(BLheapentry_t),
+        (const void*)&new_entry, range[1]);
 
     // Step 4: enable recording heap operation
     BLheapdebug_swap_hooks(&s_workdebug->apis);

@@ -7,6 +7,7 @@
 #include    <cstdio>
 #include    <cstdlib>
 #include    <cerrno>
+#include    <cassert>
 extern "C" {
 #else
 #include    <stdint.h>
@@ -15,6 +16,7 @@ extern "C" {
 #include    <stdio.h>
 #include    <stdlib.h>
 #include    <errno.h>
+#include    <assert.h>
 #endif
 
 #ifndef ARRAYSIZE

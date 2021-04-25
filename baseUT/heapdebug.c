@@ -20,7 +20,7 @@ int heapdebug_setup1(void** ppvarray, int arraysize)
         BLheapdebug_swap_hooks(&work->apis);
         for (int i = 0; i < arraysize; i++)
         {
-            ppvarray[i] = malloc(128);
+            ppvarray[i] = (i < arraysize/2) ? malloc(128) : realloc(ppvarray[i], 128);
         }
         BLheapdebug_swap_hooks(&work->apis);
         BLheapdebug_savecsv(BLheapdebug_getwork(), SAVEFILE0, "w");
@@ -69,10 +69,10 @@ int heapdebug_cleanup()
 {
     int err = EXIT_SUCCESS;
     do {
-        pBLheapdebug_t p = BLheapdebug_getwork();
-        BLheapdebug_swap_hooks(&p->apis);
-        BLSAFEFREE(&p);
-        BLheapdebug_setwork(p);
+        pBLheapdebug_t p = BLheapdebug_getwork(); // 
+        BLheapdebug_swap_hooks(&p->apis); // restore hook functions
+        BLSAFEFREE(&p); // destroy BLheapdebug_t object
+        BLheapdebug_setwork(p); // reset BLheapdebug.c/s_workdebug static object
     } while (0);
     return err;
 }
@@ -80,24 +80,30 @@ int heapdebug_cleanup()
 int heapdebug()
 {
     int err = EXIT_SUCCESS;
-    void* pvwork[128];
+    void* pvwork[128] = { NULL };
     do {
+        // test malloc()
         if (EXIT_SUCCESS != (err = heapdebug_setup1(pvwork, 16)))
         {
             UT_SHOWBREAK(stderr, __FUNCTION__, __LINE__, err);
         }
+        // test realloc()
         if (EXIT_SUCCESS != (err = heapdebug_setup2(pvwork, 16)))
         {
             UT_SHOWBREAK(stderr, __FUNCTION__, __LINE__, err);
         }
+
+        // test free()
         if (EXIT_SUCCESS != (err = heapdebug_setup3(pvwork, 16)))
         {
             UT_SHOWBREAK(stderr, __FUNCTION__, __LINE__, err);
         }
+        // clean up
         if (EXIT_SUCCESS != (err = heapdebug_cleanup()))
         {
             UT_SHOWBREAK(stderr, __FUNCTION__, __LINE__, err);
         }
     } while (0);
+    UT_SHOW(stderr, __FUNCTION__, __LINE__, err);
     return err;
 }

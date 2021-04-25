@@ -8,6 +8,7 @@ int ser();
 int ringbufex();
 int heapdebug();
 int bsearch();
+int systick();
 
 int main(int argc, char* argv[])
 {
@@ -22,6 +23,7 @@ int main(int argc, char* argv[])
         // err |= ringbufex();
         err |= heapdebug();
         err |= bsearch();
+        err |= systick();
     } while (0);
     return err;
 }
