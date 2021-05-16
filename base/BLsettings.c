@@ -86,7 +86,6 @@ static void BLsettings_removecomments(pBLsettings_t settings)
             ptr++;
         }
     } while (0);
-    return err;
 }
 
 /*!
@@ -202,8 +201,8 @@ static void BLsettings_tokenize(pBLsettings_t settings)
     do {
         
         const char* end_of_text = settings->whole_text + settings->whole_text_size;
-        char* *item = settings->items;
-        char* *item_value = settings->item_values;
+        const char* *item = settings->items;
+        const char* *item_value = settings->item_values;
         int* key_length = settings->key_lengths;
         for (const char* ptr = settings->whole_text; ptr != end_of_text;)
         {
@@ -219,7 +218,6 @@ static void BLsettings_tokenize(pBLsettings_t settings)
             ptr += strlen(ptr);
         }
     } while (0);
-    return err;
 }
 
 int BLsettings_read(pBLsettings_t settings, const char* filepath)
@@ -266,7 +264,7 @@ static int get_next_positions(char* work_buf, int separator_numbers, char* *next
     int err = EXIT_SUCCESS;
     do {
         int separator_count = 0;
-        for (const char* ptr = work_buf; '\0' != (*ptr); ptr++)
+        for (char* ptr = work_buf; '\0' != (*ptr); ptr++)
         {
             if (',' == *ptr)
             {
