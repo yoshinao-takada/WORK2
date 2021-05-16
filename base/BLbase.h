@@ -68,15 +68,15 @@ typedef const BLparams_t *pcBLparams_t;
 
 // nearly equal 
 #define BL_EQ_F(x0_, x1_, xtol_) ( \
-    (fabsf((x0_) + (x1_)) > xtol_) ? \
-    (fabsf((x0_) - (x1_))/fabsf((x0_) + (x1_)) < xtol_) : \
-    (fabsf((x0_) - (x1_))/(fabsf((x0_) + (x1_)) + xtol_) < xtol_) \
+    ((fabsf(x0_) + fabsf(x1_)) > xtol_) ? \
+    ((fabsf((x0_) - (x1_))/(fabsf(x0_) + fabsf(x1_))) < xtol_) : \
+    ((fabsf((x0_ + xtol_) - (x1_ + xtol_))/xtol_) < xtol_) \
 )
 
 #define BL_EQ(x0_, x1_, xtol_) ( \
-    (fabs((x0_) + (x1_)) > xtol_) ? \
-    (fabs((x0_) - (x1_))/fabs((x0_) + (x1_)) < xtol_) : \
-    (fabs((x0_) - (x1_))/(fabs((x0_) + (x1_)) + xtol_) < xtol_) \
+    ((fabs(x0_) + fabs(x1_)) > xtol_) ? \
+    ((fabs((x0_) - (x1_))/(fabs(x0_) + fabs(x1_))) < xtol_) : \
+    ((fabs((x0_ + xtol_) - (x1_ + xtol_))/xtol_) < xtol_) \
 )
 
 #define BL_EQ_CF(x0_, x1_, xtol_) (\

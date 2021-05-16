@@ -1,13 +1,14 @@
 #ifndef BLSYSTICK_H_
 #define BLSYSTICK_H_
-#define __USE_POSIX
 #include    <sys/time.h>
 #include    <signal.h>
 #include    <stdio.h>
+// time constant represented in struct timespec
+#define BL1msTIMESPEC   { 0, 1000000 }
+#define BL10msTIMESPEC  { 0, 10000000 }
+#define BL100msTIMESPEC { 0, 100000000 }
 
-#ifndef BLBASE_H_
 typedef void* (*BLcallback_t)(void*);
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,11 +24,11 @@ typedef const BLsystick_acttime_t *pcBLsystick_acttime_t;
 \param obj [in,out] target object
 \param time [in] time represented in various types
 */
-void BLsystic_acttime_setbytimeval(pBLsystick_acttime_t obj, struct timeval* time);
-void BLsystic_acttime_setbytimespec(pBLsystick_acttime_t obj, struct timespec* time);
-void BLsystic_acttime_setbytvsec(pBLsystick_acttime_t obj, int tv_sec);
-void BLsystic_acttime_setbyfloat(pBLsystick_acttime_t obj, float time);
-void BLsystic_acttime_setbydouble(pBLsystick_acttime_t obj, double time);
+void BLsystick_acttime_setbytimeval(pBLsystick_acttime_t obj, const struct timeval* time);
+void BLsystick_acttime_setbytimespec(pBLsystick_acttime_t obj, const struct timespec* time);
+void BLsystick_acttime_setbytvsec(pBLsystick_acttime_t obj, int tv_sec);
+void BLsystick_acttime_setbyfloat(pBLsystick_acttime_t obj, float time);
+void BLsystick_acttime_setbydouble(pBLsystick_acttime_t obj, double time);
 
 typedef struct {
     BLsystick_acttime_t old;

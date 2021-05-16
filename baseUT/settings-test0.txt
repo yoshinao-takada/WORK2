@@ -1,0 +1,13 @@
+# comment 0
+# comment 1
+#   2021-05-14 by Y.Takada
+
+group0.int_key1 = 100 # inline comment 0
+group0.int_key2 = 101, 102
+group0.int_key3 = 103, 104, -105 #inline comment 2
+group0.float_key1 = 100.0 # inline comment 0
+group0.float_key2 = 100.1, 100.2
+group0.float_key3 = 100.3, -100.4, -1.25e-12 #inline comment 2
+group0.string_key = "This is a string value"
+group0.string_key2 = This is a non-quoted value
+group0.end

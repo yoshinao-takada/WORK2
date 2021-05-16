@@ -165,7 +165,7 @@ static int insert_remove()
     BLSAFEFREE(&workarray);
     return err;
 }
-int bsearch()
+int bsearchUT()
 {
     int err = EXIT_SUCCESS, err_each = EXIT_SUCCESS;
     do {

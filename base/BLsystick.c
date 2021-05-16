@@ -4,29 +4,29 @@
 #include    <stdlib.h>
 #include    <errno.h>
 #include    <ucontext.h>
-#pragma region BLsystic_acttime_setXXX
-void BLsystic_acttime_setbytimeval(pBLsystick_acttime_t obj, struct timeval* time)
+#pragma region BLsystick_acttime_setXXX
+void BLsystick_acttime_setbytimeval(pBLsystick_acttime_t obj, const struct timeval* time)
 {
     obj->t.it_interval.tv_sec = time->tv_sec;
     obj->t.it_interval.tv_usec = time->tv_usec;
     memcpy(&obj->t.it_value, &obj->t.it_interval, sizeof(struct timeval));
 }
 
-void BLsystic_acttime_setbytimespec(pBLsystick_acttime_t obj, struct timespec* time)
+void BLsystick_acttime_setbytimespec(pBLsystick_acttime_t obj, const struct timespec* time)
 {
     obj->t.it_interval.tv_sec = time->tv_sec;
     obj->t.it_interval.tv_usec = time->tv_nsec / 1000;
     memcpy(&obj->t.it_value, &obj->t.it_interval, sizeof(struct timeval));
 }
 
-void BLsystic_acttime_setbytvsec(pBLsystick_acttime_t obj, int tv_sec)
+void BLsystick_acttime_setbytvsec(pBLsystick_acttime_t obj, int tv_sec)
 {
     obj->t.it_interval.tv_sec = tv_sec;
     obj->t.it_interval.tv_usec = 0;
     memcpy(&obj->t.it_value, &obj->t.it_interval, sizeof(struct timeval));
 }
 
-void BLsystic_acttime_setbyfloat(pBLsystick_acttime_t obj, float time)
+void BLsystick_acttime_setbyfloat(pBLsystick_acttime_t obj, float time)
 {
     float int_part, fract_part;
     fract_part = modff(time, &int_part);
@@ -35,7 +35,7 @@ void BLsystic_acttime_setbyfloat(pBLsystick_acttime_t obj, float time)
     memcpy(&obj->t.it_value, &obj->t.it_interval, sizeof(struct timeval));
 }
 
-void BLsystic_acttime_setbydouble(pBLsystick_acttime_t obj, double time)
+void BLsystick_acttime_setbydouble(pBLsystick_acttime_t obj, double time)
 {
     double int_part, fract_part;
     fract_part = modf(time, &int_part);
@@ -43,10 +43,10 @@ void BLsystic_acttime_setbydouble(pBLsystick_acttime_t obj, double time)
     obj->t.it_interval.tv_usec = (__suseconds_t)(fract_part * 1.0e6);
     memcpy(&obj->t.it_value, &obj->t.it_interval, sizeof(struct timeval));
 }
-#pragma endregion BLsystic_acttime_setXXX
+#pragma endregion BLsystick_acttime_setXXX
 
 static BLcallback_t timer_callback = NULL;
-void* timer_context = NULL;
+static void* timer_context = NULL;
 
 /*!
 \brief hidden action handler encapsulating sigaction() API.
@@ -79,7 +79,7 @@ int BLsystick_set(pBLsystick_t systick)
         if (-1 == setitimer(ITIMER_REAL, &systick->new.t, &systick->old.t))
         {
             err = errno;
-            sigaction(SIGALRM, &systick->old.act, &systick->new.act);
+            sigaction(SIGALRM, &systick->old.act, &systick->new.act); // restore the old sigaction
             break;
         }
     } while (0);
@@ -108,7 +108,7 @@ int BLsystick_restore(pBLsystick_t systick)
 void* BLsystick_samplecallback(void* param)
 {
     pBLsystick_samplecontext_t context = (pBLsystick_samplecontext_t)param;
-    int* param_count = (int*)&(context->count);
+    int* param_count = &(context->count);
     fprintf(context->output, "%s,%d,count=%d\n", __FUNCTION__, __LINE__, *param_count);
     (*param_count)++;
     return param;

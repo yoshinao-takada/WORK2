@@ -10,12 +10,14 @@ DEBUG_OBJECTS = $(DEBUG_OBJECT_DIR)/BLts.o $(DEBUG_OBJECT_DIR)/BLthread.o \
 	$(DEBUG_OBJECT_DIR)/BLprocess.o $(DEBUG_OBJECT_DIR)/BLfile.o $(DEBUG_OBJECT_DIR)/BLarray.o \
 	$(DEBUG_OBJECT_DIR)/BLringbuf.o $(DEBUG_OBJECT_DIR)/BLser.o $(DEBUG_OBJECT_DIR)/BLfsm.o \
 	$(DEBUG_OBJECT_DIR)/BLheapdebug.o $(DEBUG_OBJECT_DIR)/BLlogger.o \
-	$(DEBUG_OBJECT_DIR)/BLbsearch.o $(DEBUG_OBJECT_DIR)/BLsystick.o
+	$(DEBUG_OBJECT_DIR)/BLbsearch.o $(DEBUG_OBJECT_DIR)/BLsystick.o \
+	$(DEBUG_OBJECT_DIR)/BLdispatcher.o $(DEBUG_OBJECT_DIR)/BLsettings.o
 RELEASE_OBJECTS = $(RELEASE_OBJECT_DIR)/BLts.o $(RELEASE_OBJECT_DIR)/BLthread.o \
 	$(RELEASE_OBJECT_DIR)/BLprocess.o $(RELEASE_OBJECT_DIR)/BLfile.o $(RELEASE_OBJECT_DIR)/BLarray.o \
 	$(RELEASE_OBJECT_DIR)/BLringbuf.o $(RELEASE_OBJECT_DIR)/BLser.o $(RELEASE_OBJECT_DIR)/BLfsm.o \
 	$(RELEASE_OBJECT_DIR)/BLheapdebug.o $(RELEASE_OBJECT_DIR)/BLlogger.o \
-	$(RELEASE_OBJECT_DIR)/BLbsearch.o $(RELEASE_OBJJECT_DIR)/BLsystick.o
+	$(RELEASE_OBJECT_DIR)/BLbsearch.o $(RELEASE_OBJJECT_DIR)/BLsystick.o \
+	$(RELEASE_OBJJECT_DIR)/BLdispatcher.o $(RELEASE_OBJJECT_DIR)/BLsettings.o
 
 #-------------------- debug -------------------------------
 .PHONY	:	debug
@@ -72,6 +74,14 @@ $(DEBUG_OBJECT_DIR)/BLbsearch.o	:	BLbsearch.c BLbsearch.h
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
 $(DEBUG_OBJECT_DIR)/BLsystick.o	:	BLsystick.c BLsystick.h
+	mkdir -p $(DEBUG_OBJECT_DIR)
+	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
+
+$(DEBUG_OBJECT_DIR)/BLdispatcher.o	:	BLdispatcher.c BLdispatcher.h
+	mkdir -p $(DEBUG_OBJECT_DIR)
+	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
+
+$(DEBUG_OBJECT_DIR)/BLsettings.o	:	BLsettings.c BLsettings.h
 	mkdir -p $(DEBUG_OBJECT_DIR)
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
@@ -136,6 +146,14 @@ $(RELEASE_OBJECT_DIR)/BLbsearch.o	:	BLbsearch.c BLbsearch.h
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 
 $(RELEASE_OBJECT_DIR)/BLsystick.o	:	BLsystick.c BLsystick.h
+	mkdir -p $(RELEASE_OBJECT_DIR)
+	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
+
+$(RELEASE_OBJECT_DIR)/BLdispatcher.o	:	BLdispatcher.c BLdispatcher.h
+	mkdir -p $(RELEASE_OBJECT_DIR)
+	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
+
+$(RELEASE_OBJECT_DIR)/BLsettings.o	:	BLsettings.c BLsettings.h
 	mkdir -p $(RELEASE_OBJECT_DIR)
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 

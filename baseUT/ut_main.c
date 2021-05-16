@@ -7,8 +7,10 @@ int ringbuf();
 int ser();
 int ringbufex();
 int heapdebug();
-int bsearch();
+int bsearchUT();
 int systick();
+int dispatcher();
+int settings();
 
 int main(int argc, char* argv[])
 {
@@ -19,11 +21,13 @@ int main(int argc, char* argv[])
         // err |= UTcopy2D_4X4_to_2X2();
         // err |= UTcopy2D_4X4_to_4X4();
         // err |= ser();
-        err |= ringbuf();
+        // err |= ringbuf();
         // err |= ringbufex();
-        err |= heapdebug();
-        err |= bsearch();
-        err |= systick();
+        // err |= heapdebug();
+        // err |= bsearchUT();
+        // err |= systick();
+        // err |= dispatcher();
+        err |= settings();
     } while (0);
     return err;
 }

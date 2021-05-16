@@ -17,6 +17,10 @@
         "blfile.h": "c",
         "malloc.h": "c",
         "blsystick.h": "c",
-        "ucontext.h": "c"
+        "ucontext.h": "c",
+        "thread.h": "c",
+        "string.h": "c",
+        "uuid.h": "c",
+        "blsettings.h": "c"
     }
 }
