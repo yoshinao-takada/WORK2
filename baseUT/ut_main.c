@@ -11,6 +11,7 @@ int bsearchUT();
 int systick();
 int dispatcher();
 int settings();
+int fifo();
 
 int main(int argc, char* argv[])
 {
@@ -28,6 +29,7 @@ int main(int argc, char* argv[])
         // err |= systick();
         // err |= dispatcher();
         err |= settings();
+        err |= fifo();
     } while (0);
     return err;
 }
