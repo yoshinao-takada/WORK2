@@ -1,6 +1,6 @@
 #include "base/BLtextutil.h"
 
-int BLtextutil_readall(void* *pptext, uint32_t* filesize, const char* path)
+int BLtextutil_readfile(void* *pptext, uint32_t* filesize, const char* path)
 {
     int err = EXIT_SUCCESS;
     FILE* pf = NULL;
@@ -65,7 +65,7 @@ pBLarray1D_t BLtextutil_split(char* text, uint32_t textlength)
     {
         return p;
     }
-    char* textBegin = p + BLarray1D_totalbytes(p);
+    char* textBegin = (char*)p + BLarray1D_totalbytes(p);
     memcpy(textBegin, text, textlength);
     char** iterator = (char**)BLarray1D_begin(p);
     bool onDelimiter = true;
@@ -81,6 +81,10 @@ pBLarray1D_t BLtextutil_split(char* text, uint32_t textlength)
         else
         {
             onDelimiter = (*ptr == '\r' || *ptr == '\n');
+        }
+        if (*ptr < ' ')
+        {
+            *ptr = '\0';
         }
         ptr++;
     } while (ptr != textEnd);

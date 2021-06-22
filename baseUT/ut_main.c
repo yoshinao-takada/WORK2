@@ -13,6 +13,7 @@ int dispatcher();
 int settings();
 int fifo();
 int ptrq();
+int textutil();
 
 int main(int argc, char* argv[])
 {
@@ -32,6 +33,7 @@ int main(int argc, char* argv[])
         err |= settings();
         err |= fifo();
         err |= ptrq();
+        err |= textutil();
     } while (0);
     return err;
 }

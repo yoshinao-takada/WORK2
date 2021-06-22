@@ -11,15 +11,7 @@ extern "C" {
 \param path [in] filepath to the text file
 \return errno compatible number
 */
-int BLtextutil_readall(void* *pptext, uint32_t* filesize, const char* path);
-
-/*!
-\brief read a text file into line buffers
-\param pplines [out] multi-line buffer; It should be released by BLSAFEFREE(pplines) later. Refer to note 1 below.
-\param path [in] filepath to the text file
-\return errno compatible number
-*/
-int BLtextutil_readfile(pBLarray1D_t* pplines, const char* path);
+int BLtextutil_readfile(void* *pptext, uint32_t* filesize, const char* path);
 
 /*!
 \brief count lines in the text
