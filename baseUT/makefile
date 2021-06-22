@@ -11,12 +11,12 @@ DEBUG_OBJECTS = $(DEBUG_OBJECT_DIR)/ut_main.o $(DEBUG_OBJECT_DIR)/ts.o $(DEBUG_O
 	$(DEBUG_OBJECT_DIR)/UTarray.o $(DEBUG_OBJECT_DIR)/ringbuf.o $(DEBUG_OBJECT_DIR)/ser.o \
 	$(DEBUG_OBJECT_DIR)/ringbufex.o $(DEBUG_OBJECT_DIR)/heapdebug.o $(DEBUG_OBJECT_DIR)/bsearch.o \
 	$(DEBUG_OBJECT_DIR)/systick.o $(DEBUG_OBJECT_DIR)/dispatcher.o $(DEBUG_OBJECT_DIR)/settings.o \
-	$(DEBUG_OBJECT_DIR)/fifo.o
+	$(DEBUG_OBJECT_DIR)/fifo.o $(DEBUG_OBJECT_DIR)/ptrq.o $(DEBUG_OBJECT_DIR)/ptrq2.o
 RELEASE_OBJECTS = $(RELEASE_OBJECT_DIR)/ut_main.o $(RELEASE_OBJECT_DIR)/ts.o $(RELEASE_OBJECT_DIR)/thread.o \
 	$(RELEASE_OBJECT_DIR)/UTarray.o $(RELEASE_OBJECT_DIR)/ringbuf.o $(RELEASE_OBJECT_DIR)/ser.o \
 	$(RELEASE_OBJECT_DIR)/ringbufex.o $(RELEASE_OBJECT_DIR)/heapdebug.o $(RELEASE_OBJECT_DIR)/bsearch.o \
 	$(RELEASE_OBJECT_DIR)/systick.o $(RELEASE_OBJECT_DIR)/dispatcher.o $(RELEASE_OBJECT_DIR)/settings.o \
-	$(RELEASE_OBJECT_DIR)/fifo.o
+	$(RELEASE_OBJECT_DIR)/fifo.o $(RELEASE_OBJECT_DIR)/ptrq.o $(RELEASE_OBJECT_DIR)/ptrq2.o
 
 #-------------------- debug -------------------------------
 .PHONY	:	debug
@@ -79,6 +79,14 @@ $(DEBUG_OBJECT_DIR)/settings.o	:	settings.c
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
 $(DEBUG_OBJECT_DIR)/fifo.o	:	fifo.c
+	mkdir -p $(DEBUG_OBJECT_DIR)
+	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
+
+$(DEBUG_OBJECT_DIR)/ptrq.o	:	ptrq.c
+	mkdir -p $(DEBUG_OBJECT_DIR)
+	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
+
+$(DEBUG_OBJECT_DIR)/ptrq2.o	:	ptrq2.c
 	mkdir -p $(DEBUG_OBJECT_DIR)
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
@@ -150,6 +158,14 @@ $(RELEASE_OBJECT_DIR)/settings.o	:	settings.c
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 
 $(RELEASE_OBJECT_DIR)/fifo.o	:	fifo.c
+	mkdir -p $(RELEASE_OBJECT_DIR)
+	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
+
+$(RELEASE_OBJECT_DIR)/ptrq.o	:	ptrq.c
+	mkdir -p $(RELEASE_OBJECT_DIR)
+	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
+
+$(RELEASE_OBJECT_DIR)/ptrq2.o	:	ptrq2.c
 	mkdir -p $(RELEASE_OBJECT_DIR)
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 

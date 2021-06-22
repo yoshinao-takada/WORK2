@@ -18,6 +18,11 @@ extern "C" {
 #include    <errno.h>
 #include    <assert.h>
 #endif
+#include    <pthread.h>
+typedef struct {
+    pthread_mutex_t  enable_worker;
+    pthread_mutex_t  enable_main;
+} BLsynchronizer_t, *pBLsynchronizer_t;
 
 #ifndef ARRAYSIZE
 #define ARRAYSIZE(_a_)      (sizeof(_a_)/sizeof(_a_[0]))

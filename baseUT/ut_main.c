@@ -12,6 +12,7 @@ int systick();
 int dispatcher();
 int settings();
 int fifo();
+int ptrq();
 
 int main(int argc, char* argv[])
 {
@@ -30,6 +31,7 @@ int main(int argc, char* argv[])
         // err |= dispatcher();
         err |= settings();
         err |= fifo();
+        err |= ptrq();
     } while (0);
     return err;
 }

@@ -21,6 +21,7 @@
         "thread.h": "c",
         "string.h": "c",
         "uuid.h": "c",
-        "blsettings.h": "c"
+        "blsettings.h": "c",
+        "bldispatcher.h": "c"
     }
 }

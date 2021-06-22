@@ -19,12 +19,19 @@ typedef const BLarray1D_t *pcBLarray1D_t;
     (ptr_var) = (pBLarray1D_t)malloc(sizeof(BLarray1D_t) + (_size_)[0] * (_size_)[1]); \
     if (ptr_var) { BLcopy2((ptr_var)->size, (_size_)); }
 
+#define BLarray1D_allocex(ptr_var, _size_, _exsize_) \
+    (ptr_var) = (pBLarray1D_t)malloc(sizeof(BLarray1D_t) + (_size_)[0] * (_size_)[1] + (_exsize_)); \
+    if (ptr_var) { BLcopy2((ptr_var)->size, (_size_)); }
+
 #define BLarray1D_begin(ptr_var)    ((ptr_var)->buffer)
 #define BLarray1D_at(ptr_var, offset) \
     (BLarray1D_begin(ptr_var) + (offset) * (ptr_var)->size[0])
+#define BLarray1D_end(ptr_var)  (void*)((uint8_t*)BLarray1D_begin(ptr_var) + BLarray1D_totalbytes(ptr_var))
 
 #define BLarray1D_elementsize(ptr_var)  ((ptr_var)->size[0])
 #define BLarray1D_elementcount(ptr_var)  ((ptr_var)->size[1])
+
+#define BLarray1D_totalbytes(ptr_var)   ((ptr_var)->size[0] * (ptr_var)->size[1] + sizeof(BLarray1D_t))
 
 #ifdef __cplusplus
 }
