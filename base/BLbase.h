@@ -54,6 +54,15 @@ typedef uint64_t ULONGLONG;
 
 // this type is identical to the thread start routine of pthread
 typedef void* (*BLcallback_t)(void* param);
+typedef int (*BLcallback2_t)(void* context, void* out, const void* in);
+
+typedef struct {
+    BLcallback2_t func;
+    void* context;
+    void* out;
+    void* in;
+} BLcallbackctx_t, *pBLcallbackctx_t;
+typedef const BLcallbackctx_t *pcBLcallbackctx_t;
 
 // generic parameter for BLcallback_t functions
 typedef struct {
@@ -91,6 +100,9 @@ typedef const BLparams_t *pcBLparams_t;
 #define BL_EQ_C(x0_, x1_, xtol_) (\
     BL_EQ(creal(x0_), creal(x1_), xtol_) && BL_EQ(cimag(x0_), cimag(x1_), xtol_) \
 )
+
+#define ROTATING_ICONS_CW   "-\\|/-\\|/"
+#define ROTATING_ICONS_CCW  "-/|\\-/|\\"
 #ifdef __cplusplus
 }
 #endif

@@ -22,6 +22,10 @@
         "string.h": "c",
         "uuid.h": "c",
         "blsettings.h": "c",
-        "bldispatcher.h": "c"
+        "bldispatcher.h": "c",
+        "ncurses.h": "c",
+        "bltwowin.h": "c",
+        "bltrace.h": "c",
+        "blts.h": "c"
     }
 }

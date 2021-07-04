@@ -9,7 +9,8 @@
             "defines": [
                 "__USE_ISOC11",
                 "MATH_WORK_DIR=\"../../WorkData/math/\"",
-                "BASE_WORK_DIR=\"../../WorkData/base/\""
+                "BASE_WORK_DIR=\"../../WorkData/base/\"",
+                "_DEBUG"
             ],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c11",
