@@ -6,8 +6,10 @@ DEBUG_OBJECT_DIR = o/debug
 RELEASE_OBJECT_DIR = o/release
 DEBUG_TARGET = $(DEBUG_TARGET_DIR)/libBLcurses.a
 RELEASE_TARGET = $(RELEASE_TARGET_DIR)/libBLcurses.a
-DEBUG_OBJECTS = $(DEBUG_OBJECT_DIR)/BLtwowin.o $(DEBUG_OBJECT_DIR)/BLgetline.o
-RELEASE_OBJECTS = $(RELEASE_OBJECT_DIR)/BLtwowin.o $(RELEASE_OBJECT_DIR)/Blgetline.o
+DEBUG_OBJECTS = $(DEBUG_OBJECT_DIR)/BLtwowin.o $(DEBUG_OBJECT_DIR)/BLgetline.o $(DEBUG_OBJECT_DIR)/BLsubwin.o \
+	$(DEBUG_OBJECT_DIR)/BLmultiwin.o
+RELEASE_OBJECTS = $(RELEASE_OBJECT_DIR)/BLtwowin.o $(RELEASE_OBJECT_DIR)/Blgetline.o $(RELEASE_OBJECT_DIR)/BLsubwin.o \
+	$(RELEASE_OBJECT_DIR)/BLmultiwin.o
 
 #-------------------- debug -------------------------------
 .PHONY	:	debug
@@ -24,6 +26,14 @@ $(DEBUG_OBJECT_DIR)/BLtwowin.o	:	BLtwowin.c BLtwowin.h
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
 $(DEBUG_OBJECT_DIR)/BLgetline.o	:	BLgetline.c BLgetline.h
+	mkdir -p $(DEBUG_OBJECT_DIR)
+	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
+
+$(DEBUG_OBJECT_DIR)/BLsubwin.o	:	BLsubwin.c BLsubwin.h
+	mkdir -p $(DEBUG_OBJECT_DIR)
+	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
+
+$(DEBUG_OBJECT_DIR)/BLmultiwin.o	:	BLmultiwin.c BLmultiwin.h
 	mkdir -p $(DEBUG_OBJECT_DIR)
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
@@ -47,6 +57,14 @@ $(RELEASE_OBJECT_DIR)/BLtwowin.o	:	BLtwowin.c BLtwowin.h
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 
 $(RELEASE_OBJECT_DIR)/BLgetline.o	:	BLgetline.c BLgetline.h
+	mkdir -p $(RELEASE_OBJECT_DIR)
+	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
+
+$(RELEASE_OBJECT_DIR)/BLsubwin.o	:	BLsubwin.c BLsubwin.h
+	mkdir -p $(RELEASE_OBJECT_DIR)
+	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
+
+$(RELEASE_OBJECT_DIR)/BLmultiwin.o	:	BLmultiwin.c BLmultiwin.h
 	mkdir -p $(RELEASE_OBJECT_DIR)
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 

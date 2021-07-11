@@ -26,6 +26,8 @@
         "ncurses.h": "c",
         "bltwowin.h": "c",
         "bltrace.h": "c",
-        "blts.h": "c"
+        "blts.h": "c",
+        "blsubwin.h": "c",
+        "blmultiwin.h": "c"
     }
 }

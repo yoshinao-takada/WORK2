@@ -7,10 +7,11 @@ RELEASE_OBJECT_DIR = o/release
 DEBUG_TARGET = $(DEBUG_TARGET_DIR)/cursesUT.exe
 RELEASE_TARGET = $(RELEASE_TARGET_DIR)/cursesUT.exe
 DEBUG_OBJECTS = $(DEBUG_OBJECT_DIR)/curses_main.o \
-	$(DEBUG_OBJECT_DIR)/mwin.o $(DEBUG_OBJECT_DIR)/vgetl.o $(DEBUG_OBJECT_DIR)/logger.o
+	$(DEBUG_OBJECT_DIR)/mwin.o $(DEBUG_OBJECT_DIR)/vgetl.o $(DEBUG_OBJECT_DIR)/logger.o \
+	$(DEBUG_OBJECT_DIR)/multiwin.o
 RELEASE_OBJECTS = $(RELEASE_OBJECT_DIR)/curses_main.o \
-	$(RELEASE_OBJECT_DIR)/mwin.o $(RELEASE_OBJECT_DIR)/vgetl.o $(RELEASE_OBJECT_DIR)/logger.o
-
+	$(RELEASE_OBJECT_DIR)/mwin.o $(RELEASE_OBJECT_DIR)/vgetl.o $(RELEASE_OBJECT_DIR)/logger.o \
+	$(RELEASE_OBJECT_DIR)/multiwin.o
 
 #-------------------- debug -------------------------------
 .PHONY	:	debug
@@ -37,6 +38,10 @@ $(DEBUG_OBJECT_DIR)/vgetl.o	:	vgetl.c
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
 $(DEBUG_OBJECT_DIR)/logger.o	:	 logger.c
+	mkdir -p $(DEBUG_OBJECT_DIR)
+	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
+
+$(DEBUG_OBJECT_DIR)/multiwin.o	:	 multiwin.c
 	mkdir -p $(DEBUG_OBJECT_DIR)
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
