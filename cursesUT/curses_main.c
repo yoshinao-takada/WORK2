@@ -9,10 +9,10 @@ int main()
 {
     int err = EXIT_SUCCESS;
     do {
-        // if (EXIT_SUCCESS != (err = mwin()))
-        // {
-        //     UT_SHOWBREAK(stderr, "mwin()", 0, err);
-        // }
+        if (EXIT_SUCCESS != (err = mwin()))
+        {
+            UT_SHOWBREAK(stderr, "mwin()", 0, err);
+        }
         // if (EXIT_SUCCESS != (err = vgetl()))
         // {
         //     UT_SHOWBREAK(stderr, "vgetl()", 0, err);

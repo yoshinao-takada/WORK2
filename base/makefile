@@ -9,19 +9,20 @@ RELEASE_TARGET = $(RELEASE_TARGET_DIR)/libBLbase.a
 DEBUG_OBJECTS = $(DEBUG_OBJECT_DIR)/BLts.o $(DEBUG_OBJECT_DIR)/BLthread.o \
 	$(DEBUG_OBJECT_DIR)/BLprocess.o $(DEBUG_OBJECT_DIR)/BLfile.o $(DEBUG_OBJECT_DIR)/BLarray.o \
 	$(DEBUG_OBJECT_DIR)/BLringbuf.o $(DEBUG_OBJECT_DIR)/BLser.o $(DEBUG_OBJECT_DIR)/BLfsm.o \
-	$(DEBUG_OBJECT_DIR)/BLheapdebug.o $(DEBUG_OBJECT_DIR)/BLlogger.o \
 	$(DEBUG_OBJECT_DIR)/BLbsearch.o $(DEBUG_OBJECT_DIR)/BLsystick.o \
 	$(DEBUG_OBJECT_DIR)/BLdispatcher.o $(DEBUG_OBJECT_DIR)/BLsettings.o \
 	$(DEBUG_OBJECT_DIR)/BLminififo.o $(DEBUG_OBJECT_DIR)/BLptrq.o \
-	$(DEBUG_OBJECT_DIR)/BLtextutil.o
+	$(DEBUG_OBJECT_DIR)/BLtextutil.o  $(DEBUG_OBJECT_DIR)/BLlogger.o $(DEBUG_OBJECT_DIR)/BLnlsolver.o
+#	$(DEBUG_OBJECT_DIR)/BLheapdebug.o
+
 RELEASE_OBJECTS = $(RELEASE_OBJECT_DIR)/BLts.o $(RELEASE_OBJECT_DIR)/BLthread.o \
 	$(RELEASE_OBJECT_DIR)/BLprocess.o $(RELEASE_OBJECT_DIR)/BLfile.o $(RELEASE_OBJECT_DIR)/BLarray.o \
 	$(RELEASE_OBJECT_DIR)/BLringbuf.o $(RELEASE_OBJECT_DIR)/BLser.o $(RELEASE_OBJECT_DIR)/BLfsm.o \
-	$(RELEASE_OBJECT_DIR)/BLheapdebug.o $(RELEASE_OBJECT_DIR)/BLlogger.o \
-	$(RELEASE_OBJECT_DIR)/BLbsearch.o $(RELEASE_OBJJECT_DIR)/BLsystick.o \
-	$(RELEASE_OBJECT_DIR)/BLdispatcher.o $(RELEASE_OBJJECT_DIR)/BLsettings.o \
-	$(RELEASE_OBJECT_DIR)/BLminififo.o $(RELEASE_OBJJECT_DIR)/BLptrq.o \
-	$(RELEASE_OBJECT_DIR)/BLtextutil.o
+	$(RELEASE_OBJECT_DIR)/BLbsearch.o $(RELEASE_OBJECT_DIR)/BLsystick.o \
+	$(RELEASE_OBJECT_DIR)/BLdispatcher.o $(RELEASE_OBJECT_DIR)/BLsettings.o \
+	$(RELEASE_OBJECT_DIR)/BLminififo.o $(RELEASE_OBJECT_DIR)/BLptrq.o \
+	$(RELEASE_OBJECT_DIR)/BLtextutil.o  $(RELEASE_OBJECT_DIR)/BLlogger.o $(RELEASE_OBJECT_DIR)/BLnlsolver.o
+#	$(RELEASE_OBJECT_DIR)/BLheapdebug.o
 
 #-------------------- debug -------------------------------
 .PHONY	:	debug
@@ -70,6 +71,10 @@ $(DEBUG_OBJECT_DIR)/BLheapdebug.o	:	BLheapdebug.c BLheapdebug.h
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
 $(DEBUG_OBJECT_DIR)/BLlogger.o	:	BLlogger.c BLlogger.h
+	mkdir -p $(DEBUG_OBJECT_DIR)
+	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
+
+$(DEBUG_OBJECT_DIR)/BLnlsolver.o	:	BLnlsolver.c BLnlsolver.h
 	mkdir -p $(DEBUG_OBJECT_DIR)
 	$(CC) $(DEBUG_CC_FLAGS) -o $@ $<
 
@@ -154,6 +159,10 @@ $(RELEASE_OBJECT_DIR)/BLheapdebug.o	:	BLheapdebug.c BLheapdebug.h
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 
 $(RELEASE_OBJECT_DIR)/BLlogger.o	:	BLlogger.c BLlogger.h
+	mkdir -p $(RELEASE_OBJECT_DIR)
+	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
+
+$(RELEASE_OBJECT_DIR)/BLnlsolver.o	:	BLnlsolver.c BLnlsolver.h
 	mkdir -p $(RELEASE_OBJECT_DIR)
 	$(CC) $(RELEASE_CC_FLAGS) -o $@ $<
 

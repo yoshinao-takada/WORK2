@@ -1,5 +1,8 @@
 #ifndef BLSV_H_
 #define BLSV_H_
+/**
+ * @brief fxied size short vector types
+ */
 #ifdef __cplusplus
 #include    <ccomplex>
 #include    <cstdint>

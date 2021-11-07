@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.ispc": "ispc",
         "blsiotty.h": "c",
         "errno.h": "c",
         "pthread.h": "c",
@@ -28,6 +29,8 @@
         "bltrace.h": "c",
         "blts.h": "c",
         "blsubwin.h": "c",
-        "blmultiwin.h": "c"
+        "blmultiwin.h": "c",
+        "blsv.h": "c",
+        "cstdio": "cpp"
     }
 }
